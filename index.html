@@ -789,14 +789,14 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-   <!-- FSRS Algorithm -->
-<script type="module">
-    import * as tsFsrs from 'https://cdn.jsdelivr.net/npm/ts-fsrs@4.1.0/+esm';
-    window.FSRS = tsFsrs;
-    window.fsrsLoaded = true;
-    console.log('FSRS loaded successfully');
-    window.dispatchEvent(new Event('fsrs-ready'));
-</script>
+    <!-- FSRS Algorithm -->
+    <script type="module">
+        import * as tsFsrs from 'https://cdn.jsdelivr.net/npm/ts-fsrs@4.1.0/+esm';
+        window.FSRS = tsFsrs;
+        window.fsrsLoaded = true;
+        console.log('FSRS loaded successfully');
+        window.dispatchEvent(new Event('fsrs-ready'));
+    </script>
     
     <!-- App.js -->
     <script src="app.js"></script>
@@ -907,12 +907,33 @@
             loadingContainer.classList.remove('hidden');
             
             userEmail.textContent = user.email;
-
+            
             // Сохраняем глобально для FSRS загрузчика
-        window.supabaseClient = supabaseClient;
-        window.currentUser = user;
+            window.supabaseClient = supabaseClient;
+            window.currentUser = user;
             
             try {
+                // Ждём загрузки FSRS
+                if (!window.FSRS || !window.fsrsLoaded) {
+                    console.log('Waiting for FSRS to load...');
+                    await new Promise(resolve => {
+                        if (window.FSRS) {
+                            resolve();
+                        } else {
+                            window.addEventListener('fsrs-ready', resolve);
+                            setTimeout(() => {
+                                if (window.FSRS) resolve();
+                            }, 3000);
+                        }
+                    });
+                }
+                
+                if (!window.FSRS) {
+                    throw new Error('FSRS библиотека не загрузилась');
+                }
+                
+                console.log('FSRS is ready, creating app...');
+                
                 // Создаем экземпляр приложения с поддержкой Storage
                 app = new SpanishCardsApp(supabaseClient, user);
                 app.supabase.storageUrl = storageUrl; // Добавляем URL для Storage
@@ -924,7 +945,7 @@
                 appContainer.classList.remove('hidden');
             } catch (error) {
                 console.error('Error initializing app:', error);
-                errorMessage.textContent = 'Ошибка загрузки приложения';
+                errorMessage.textContent = 'Ошибка загрузки приложения: ' + error.message;
                 errorMessage.style.display = 'block';
                 loadingContainer.classList.add('hidden');
                 authContainer.classList.remove('hidden');

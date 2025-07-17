@@ -1,24 +1,5 @@
 // app.js - Основная логика приложения с FSRS и Supabase
 
-// Check if FSRS is loaded
-if (typeof FSRS === 'undefined') {
-    console.error('FSRS library not loaded. Attempting to load dynamically...');
-    // Динамическая загрузка как резервный вариант
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/ts-fsrs@4.1.0/dist/index.global.min.js';
-    script.onload = () => {
-        console.log('FSRS loaded dynamically');
-        // Инициализируем приложение после загрузки библиотеки
-        if (window.supabaseClient && window.currentUser) {
-            new SpanishCardsApp(window.supabaseClient, window.currentUser);
-        }
-    };
-    script.onerror = () => {
-        console.error('Failed to load FSRS library');
-        alert('Не удалось загрузить библиотеку FSRS. Пожалуйста, проверьте подключение к интернету и перезагрузите страницу.');
-    };
-    document.head.appendChild(script);
-}
 class SpanishCardsApp {
     constructor(supabase, user) {
         this.supabase = supabase;

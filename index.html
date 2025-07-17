@@ -790,19 +790,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- FSRS Algorithm -->
-    <script>
-    // Загружаем FSRS библиотеку
-    const script = document.createElement('script');
-    script.src = 'https://esm.sh/ts-fsrs@4.1.0';
-    script.onload = function() {
-        console.log('FSRS loaded successfully');
-        window.FSRS = tsfsrs.FSRS || tsfsrs.fsrs || tsfsrs;
-    };
-    script.onerror = function() {
-        console.error('Failed to load FSRS');
-    };
-    document.head.appendChild(script);
-</script>
+<script src="https://cdn.jsdelivr.net/npm/ts-fsrs@4.1.0/dist/index.global.min.js"></script>
     
     <!-- App.js -->
     <script src="app.js"></script>

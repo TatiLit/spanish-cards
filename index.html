@@ -901,6 +901,10 @@
             loadingContainer.classList.remove('hidden');
             
             userEmail.textContent = user.email;
+
+            // Сохраняем глобально для FSRS загрузчика
+        window.supabaseClient = supabaseClient;
+        window.currentUser = user;
             
             try {
                 // Создаем экземпляр приложения с поддержкой Storage

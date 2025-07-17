@@ -789,27 +789,13 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- FSRS Algorithm -->
-<script>
-    // Загружаем FSRS через динамический импорт
-    (async function() {
-        try {
-            const module = await import('https://cdn.jsdelivr.net/npm/ts-fsrs@4.1.0/+esm');
-            window.FSRS = module.FSRS || module.default || module;
-            window.fsrsLoaded = true;
-            console.log('FSRS loaded successfully:', window.FSRS);
-        } catch (error) {
-            console.error('Failed to load FSRS:', error);
-            // Пробуем альтернативный способ
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/ts-fsrs@3.5.6/dist/index.global.js';
-            script.onload = () => {
-                window.fsrsLoaded = true;
-                console.log('FSRS loaded via fallback');
-            };
-            document.head.appendChild(script);
-        }
-    })();
+   <!-- FSRS Algorithm -->
+<script type="module">
+    import * as tsFsrs from 'https://cdn.jsdelivr.net/npm/ts-fsrs@4.1.0/+esm';
+    window.FSRS = tsFsrs;
+    window.fsrsLoaded = true;
+    console.log('FSRS loaded successfully');
+    window.dispatchEvent(new Event('fsrs-ready'));
 </script>
     
     <!-- App.js -->

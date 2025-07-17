@@ -5,7 +5,13 @@ class SpanishCardsApp {
         this.supabase = supabase;
         this.user = user;
         
-        // FSRS configuration
+        // Извлекаем FSRS из глобального объекта
+        const { FSRS, createEmptyCard } = window.FSRS;
+        
+        // Сохраняем функцию createEmptyCard
+        this.createEmptyCard = createEmptyCard;
+        
+        // Создаем экземпляр FSRS
         this.fsrs = new FSRS({
             w: [0.4, 0.6, 2.4, 5.8, 4.93, 0.94, 0.86, 0.01, 1.49, 0.14, 0.94, 2.18, 0.05, 0.34, 1.26, 0.29, 2.61],
             request_retention: 0.9,
@@ -120,7 +126,7 @@ class SpanishCardsApp {
         // Инициализация новых карточек
         this.cards.forEach(card => {
             if (!this.cardStates[card.id]) {
-                this.cardStates[card.id] = FSRS.createEmptyCard();
+                this.cardStates[card.id] = this.createEmptyCard();
             }
         });
     }

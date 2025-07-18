@@ -6,10 +6,11 @@ class SpanishCardsApp {
         this.user = user;
         
         // Извлекаем FSRS из глобального объекта
-        const { FSRS, createEmptyCard } = window.FSRS;
+        const { FSRS, createEmptyCard, Rating } = window.FSRS;
         
-        // Сохраняем функцию createEmptyCard
+        // Сохраняем функции для использования
         this.createEmptyCard = createEmptyCard;
+        this.Rating = Rating;
         
         // Создаем экземпляр FSRS
         this.fsrs = new FSRS({
@@ -134,24 +135,31 @@ class SpanishCardsApp {
     async loadTodayStats() {
         const today = new Date().toISOString().split('T')[0];
         
-        const { data, error } = await this.supabase
-            .from('user_stats')
-            .select('*')
-            .eq('user_id', this.user.id)
-            .eq('date', today)
-            .single();
-        
-        if (error && error.code !== 'PGRST116') {
-            throw error;
-        }
-        
-        if (data) {
-            this.todayStats = {
-                studied: data.studied,
-                correct: data.correct,
-                newCards: data.new_cards,
-                reviewCards: data.review_cards
-            };
+        try {
+            const { data, error } = await this.supabase
+                .from('user_stats')
+                .select('*')
+                .eq('user_id', this.user.id)
+                .eq('date', today)
+                .single();
+            
+            if (error && error.code !== 'PGRST116') {
+                console.warn('Error loading stats:', error);
+                // Продолжаем работу с дефолтными значениями
+                return;
+            }
+            
+            if (data) {
+                this.todayStats = {
+                    studied: data.studied,
+                    correct: data.correct,
+                    newCards: data.new_cards,
+                    reviewCards: data.review_cards
+                };
+            }
+        } catch (e) {
+            console.warn('Stats loading failed, using defaults:', e);
+            // Используем дефолтные значения
         }
     }
     
@@ -218,7 +226,17 @@ class SpanishCardsApp {
         
         // Подготавливаем FSRS scheduling
         const state = this.cardStates[this.currentCard.id];
-        this.currentScheduling = this.fsrs.repeat(state, new Date());
+        const schedulingInfo = this.fsrs.repeat(state, new Date());
+        
+        // FSRS v4 возвращает объект с ключами Rating.Again, Rating.Hard и т.д.
+        const { Rating } = window.FSRS;
+        this.currentScheduling = {
+            'again': schedulingInfo[Rating.Again],
+            'hard': schedulingInfo[Rating.Hard],
+            'good': schedulingInfo[Rating.Good],
+            'easy': schedulingInfo[Rating.Easy]
+        };
+        
         this.updateIntervals();
         
         // Автовоспроизведение
@@ -270,8 +288,14 @@ class SpanishCardsApp {
         const oldState = this.cardStates[this.currentCard.id];
         const wasNew = oldState.state === 'new';
         
-        // Обновляем через FSRS
-        const { card: newCard } = this.currentScheduling[fsrsRating];
+        // Обновляем через FSRS - используем уже подготовленный scheduling
+        const schedulingInfo = this.currentScheduling[fsrsRating];
+        if (!schedulingInfo || !schedulingInfo.card) {
+            console.error('No scheduling info for rating:', fsrsRating);
+            return;
+        }
+        
+        const newCard = schedulingInfo.card;
         this.cardStates[this.currentCard.id] = newCard;
         
         // Обновляем статистику
@@ -365,10 +389,19 @@ class SpanishCardsApp {
             return `${Math.round(days/365)}г`;
         };
         
-        document.getElementById('againInterval').textContent = formatInterval(this.currentScheduling['again'].card);
-        document.getElementById('hardInterval').textContent = formatInterval(this.currentScheduling['hard'].card);
-        document.getElementById('goodInterval').textContent = formatInterval(this.currentScheduling['good'].card);
-        document.getElementById('easyInterval').textContent = formatInterval(this.currentScheduling['easy'].card);
+        // Проверяем, что scheduling существует и содержит нужные данные
+        if (this.currentScheduling['again'] && this.currentScheduling['again'].card) {
+            document.getElementById('againInterval').textContent = formatInterval(this.currentScheduling['again'].card);
+        }
+        if (this.currentScheduling['hard'] && this.currentScheduling['hard'].card) {
+            document.getElementById('hardInterval').textContent = formatInterval(this.currentScheduling['hard'].card);
+        }
+        if (this.currentScheduling['good'] && this.currentScheduling['good'].card) {
+            document.getElementById('goodInterval').textContent = formatInterval(this.currentScheduling['good'].card);
+        }
+        if (this.currentScheduling['easy'] && this.currentScheduling['easy'].card) {
+            document.getElementById('easyInterval').textContent = formatInterval(this.currentScheduling['easy'].card);
+        }
     }
     
     updateStats() {

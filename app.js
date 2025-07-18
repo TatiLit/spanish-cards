@@ -23,6 +23,7 @@ class SpanishCardsApp {
         this.cards = [];
         this.cardStates = {};
         this.currentCard = null;
+        this.currentAudio = null;
         this.isFlipped = false;
         this.studyMode = 'mixed';
         this.settings = {
@@ -215,10 +216,13 @@ class SpanishCardsApp {
             cardContent.textContent = this.currentCard.spanish;
             cardContent.className = 'card-content spanish';
             playBtn.innerHTML = '<span>🔊</span><span>Воспроизвести</span>';
+            playBtn.style.display = this.currentCard.audio ? 'inline-flex' : 'none';
         } else {
             cardContent.textContent = this.currentCard.russian;
             cardContent.className = 'card-content russian';
             playBtn.innerHTML = '<span>🔊</span><span>Произнести</span>';
+            // Скрываем кнопку для русского текста, если нет аудио
+            playBtn.style.display = 'none';
         }
         
         cardHint.style.display = 'block';
@@ -239,7 +243,7 @@ class SpanishCardsApp {
         
         this.updateIntervals();
         
-        // Автовоспроизведение
+        // Автовоспроизведение только для испанского
         if (this.settings.autoplay && cardType === 'spanish-russian' && this.currentCard.audio) {
             setTimeout(() => this.playAudio(), 300);
         }
@@ -262,19 +266,24 @@ class SpanishCardsApp {
         const cardContent = document.getElementById('cardContent');
         const cardHint = document.getElementById('cardHint');
         const ratingButtons = document.getElementById('ratingButtons');
+        const playBtn = document.getElementById('playBtn');
         
         if (this.currentCard.currentType === 'spanish-russian') {
             cardContent.textContent = this.currentCard.russian;
             cardContent.className = 'card-content russian';
+            // Скрываем кнопку звука при показе русского перевода
+            playBtn.style.display = 'none';
         } else {
             cardContent.textContent = this.currentCard.spanish;
             cardContent.className = 'card-content spanish';
+            // Показываем кнопку звука при показе испанского текста
+            playBtn.style.display = this.currentCard.audio ? 'inline-flex' : 'none';
         }
         
         cardHint.style.display = 'none';
         ratingButtons.classList.add('visible');
         
-        // Автовоспроизведение
+        // Автовоспроизведение только для испанского текста
         if (this.settings.autoplay && this.currentCard.currentType === 'russian-spanish' && this.currentCard.audio) {
             setTimeout(() => this.playAudio(), 300);
         }
@@ -340,40 +349,57 @@ class SpanishCardsApp {
     async saveTodayStats() {
         const today = new Date().toISOString().split('T')[0];
         
-        const { error } = await this.supabase
-            .from('user_stats')
-            .upsert({
-                user_id: this.user.id,
-                date: today,
-                studied: this.todayStats.studied,
-                correct: this.todayStats.correct,
-                new_cards: this.todayStats.newCards,
-                review_cards: this.todayStats.reviewCards
-            });
-        
-        if (error) {
-            console.error('Error saving stats:', error);
+        try {
+            const { error } = await this.supabase
+                .from('user_stats')
+                .upsert({
+                    user_id: this.user.id,
+                    date: today,
+                    studied: this.todayStats.studied,
+                    correct: this.todayStats.correct,
+                    new_cards: this.todayStats.newCards,
+                    review_cards: this.todayStats.reviewCards
+                }, {
+                    onConflict: 'user_id,date'
+                });
+            
+            if (error) {
+                console.warn('Error saving stats:', error);
+                // Не прерываем работу приложения
+            }
+        } catch (e) {
+            console.warn('Failed to save stats:', e);
+            // Продолжаем работу даже если сохранение не удалось
         }
     }
     
     playAudio() {
         if (!this.currentCard.audio) return;
         
+        // Проверяем, не играет ли уже аудио
+        if (this.currentAudio && !this.currentAudio.paused) {
+            this.currentAudio.pause();
+            this.currentAudio = null;
+        }
+        
         const playBtn = document.getElementById('playBtn');
         playBtn.classList.add('playing');
         
         // Используем Supabase Storage URL
         const audioUrl = `${this.supabase.storageUrl}/object/public/audio/${this.currentCard.audio}`;
-        const audio = new Audio(audioUrl);
-        audio.play()
+        this.currentAudio = new Audio(audioUrl);
+        
+        this.currentAudio.play()
             .then(() => {
-                audio.addEventListener('ended', () => {
+                this.currentAudio.addEventListener('ended', () => {
                     playBtn.classList.remove('playing');
+                    this.currentAudio = null;
                 });
             })
             .catch(error => {
                 console.error('Audio playback error:', error);
                 playBtn.classList.remove('playing');
+                this.currentAudio = null;
             });
     }
     

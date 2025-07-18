@@ -142,9 +142,9 @@ class SpanishCardsApp {
                 .select('*')
                 .eq('user_id', this.user.id)
                 .eq('date', today)
-                .single();
+                .maybeSingle(); // Используем maybeSingle вместо single
             
-            if (error && error.code !== 'PGRST116') {
+            if (error) {
                 console.warn('Error loading stats:', error);
                 // Продолжаем работу с дефолтными значениями
                 return;
@@ -172,7 +172,7 @@ class SpanishCardsApp {
         if (this.todayStats.reviewCards < this.settings.dailyReviewLimit) {
             this.cards.forEach(card => {
                 const state = this.cardStates[card.id];
-                if (state.state !== 'new' && state.due <= now) {
+                if (state.state !== 0 && state.due <= now) {
                     availableCards.push({ card, priority: 1 });
                 }
             });
@@ -182,7 +182,7 @@ class SpanishCardsApp {
         if (availableCards.length === 0 && this.todayStats.newCards < this.settings.dailyNewLimit) {
             this.cards.forEach(card => {
                 const state = this.cardStates[card.id];
-                if (state.state === 'new') {
+                if (state.state === 0) {
                     availableCards.push({ card, priority: 2 });
                 }
             });
@@ -200,11 +200,21 @@ class SpanishCardsApp {
     }
     
     showCard() {
+        console.log('showCard called for:', this.currentCard.id, this.currentCard.spanish);
+        
         this.isFlipped = false;
+        
+        // Останавливаем текущее аудио если играет
+        if (this.currentAudio && !this.currentAudio.paused) {
+            this.currentAudio.pause();
+            this.currentAudio = null;
+        }
         
         // Определяем направление
         const cardType = this.getCardType();
         this.currentCard.currentType = cardType;
+        
+        console.log('Card type:', cardType);
         
         // Обновляем UI
         const cardContent = document.getElementById('cardContent');
@@ -243,10 +253,8 @@ class SpanishCardsApp {
         
         this.updateIntervals();
         
-        // Автовоспроизведение только для испанского
-        if (this.settings.autoplay && cardType === 'spanish-russian' && this.currentCard.audio) {
-            setTimeout(() => this.playAudio(), 300);
-        }
+        // Убираем автовоспроизведение при первом показе
+        // Браузеры блокируют автовоспроизведение без взаимодействия пользователя
         
         this.updateStats();
     }
@@ -261,7 +269,15 @@ class SpanishCardsApp {
     showAnswer() {
         if (this.isFlipped) return;
         
+        console.log('showAnswer called for card:', this.currentCard.id, this.currentCard.spanish);
+        
         this.isFlipped = true;
+        
+        // Останавливаем текущее аудио если играет
+        if (this.currentAudio && !this.currentAudio.paused) {
+            this.currentAudio.pause();
+            this.currentAudio = null;
+        }
         
         const cardContent = document.getElementById('cardContent');
         const cardHint = document.getElementById('cardHint');
@@ -269,48 +285,63 @@ class SpanishCardsApp {
         const playBtn = document.getElementById('playBtn');
         
         if (this.currentCard.currentType === 'spanish-russian') {
+            console.log('Showing Russian for:', this.currentCard.spanish, '->', this.currentCard.russian);
             cardContent.textContent = this.currentCard.russian;
             cardContent.className = 'card-content russian';
             // Скрываем кнопку звука при показе русского перевода
             playBtn.style.display = 'none';
         } else {
+            console.log('Showing Spanish for:', this.currentCard.russian, '->', this.currentCard.spanish);
             cardContent.textContent = this.currentCard.spanish;
             cardContent.className = 'card-content spanish';
             // Показываем кнопку звука при показе испанского текста
             playBtn.style.display = this.currentCard.audio ? 'inline-flex' : 'none';
+            
+            // Автовоспроизведение только после взаимодействия пользователя
+            if (this.settings.autoplay && this.currentCard.audio) {
+                // Воспроизводим только если пользователь кликнул (есть взаимодействие)
+                setTimeout(() => this.playAudio(), 300);
+            }
         }
         
         cardHint.style.display = 'none';
         ratingButtons.classList.add('visible');
-        
-        // Автовоспроизведение только для испанского текста
-        if (this.settings.autoplay && this.currentCard.currentType === 'russian-spanish' && this.currentCard.audio) {
-            setTimeout(() => this.playAudio(), 300);
-        }
     }
     
     async rateCard(rating) {
-        const ratingMap = {1: 'again', 2: 'hard', 3: 'good', 4: 'easy'};
-        const fsrsRating = ratingMap[rating];
-        
         // Получаем старое состояние для проверки
         const oldState = this.cardStates[this.currentCard.id];
-        const wasNew = oldState.state === 'new';
+        const wasNew = oldState.state === 0; // 0 = New в FSRS
         
-        // Обновляем через FSRS - используем уже подготовленный scheduling
-        const schedulingInfo = this.currentScheduling[fsrsRating];
-        if (!schedulingInfo || !schedulingInfo.card) {
+        // Используем правильные значения Rating из FSRS
+        const ratingMap = {
+            1: this.Rating.Again,
+            2: this.Rating.Hard, 
+            3: this.Rating.Good,
+            4: this.Rating.Easy
+        };
+        
+        const fsrsRating = ratingMap[rating];
+        if (fsrsRating === undefined) {
+            console.error('Invalid rating:', rating);
+            return;
+        }
+        
+        // Получаем новое состояние карточки
+        const schedulingInfo = this.fsrs.repeat(oldState, new Date());
+        const newCard = schedulingInfo[fsrsRating].card;
+        
+        if (!newCard) {
             console.error('No scheduling info for rating:', fsrsRating);
             return;
         }
         
-        const newCard = schedulingInfo.card;
         this.cardStates[this.currentCard.id] = newCard;
         
         // Обновляем статистику
         this.todayStats.studied++;
         if (rating >= 3) this.todayStats.correct++;
-        if (wasNew && newCard.state !== 'new') {
+        if (wasNew && newCard.state !== 0) {
             this.todayStats.newCards++;
         } else if (!wasNew) {
             this.todayStats.reviewCards++;
@@ -438,7 +469,7 @@ class SpanishCardsApp {
         
         this.cards.forEach(card => {
             const state = this.cardStates[card.id];
-            if (state.state === 'new') {
+            if (state.state === 0) { // 0 = New
                 newCount++;
             } else if (state.due <= now) {
                 dueCount++;

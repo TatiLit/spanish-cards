@@ -24,6 +24,7 @@ class SpanishCardsApp {
         this.cardStates = {};
         this.currentCard = null;
         this.currentAudio = null;
+        this.audioCache = new Map(); // Кеш для аудио объектов
         this.isFlipped = false;
         this.studyMode = 'mixed';
         this.settings = {
@@ -142,11 +143,10 @@ class SpanishCardsApp {
                 .select('*')
                 .eq('user_id', this.user.id)
                 .eq('date', today)
-                .maybeSingle(); // Используем maybeSingle вместо single
+                .maybeSingle();
             
             if (error) {
                 console.warn('Error loading stats:', error);
-                // Продолжаем работу с дефолтными значениями
                 return;
             }
             
@@ -160,7 +160,6 @@ class SpanishCardsApp {
             }
         } catch (e) {
             console.warn('Stats loading failed, using defaults:', e);
-            // Используем дефолтные значения
         }
     }
     
@@ -202,13 +201,11 @@ class SpanishCardsApp {
     showCard() {
         console.log('showCard called for:', this.currentCard.id, this.currentCard.spanish);
         
+        // ВАЖНО: Сбрасываем состояние
         this.isFlipped = false;
         
-        // Останавливаем текущее аудио если играет
-        if (this.currentAudio && !this.currentAudio.paused) {
-            this.currentAudio.pause();
-            this.currentAudio = null;
-        }
+        // Останавливаем ВСЕ аудио
+        this.stopAllAudio();
         
         // Определяем направление
         const cardType = this.getCardType();
@@ -222,6 +219,10 @@ class SpanishCardsApp {
         const cardHint = document.getElementById('cardHint');
         const ratingButtons = document.getElementById('ratingButtons');
         
+        // Сбрасываем классы и состояние кнопок
+        ratingButtons.classList.remove('visible');
+        cardHint.style.display = 'block';
+        
         if (cardType === 'spanish-russian') {
             cardContent.textContent = this.currentCard.spanish;
             cardContent.className = 'card-content spanish';
@@ -231,31 +232,22 @@ class SpanishCardsApp {
             cardContent.textContent = this.currentCard.russian;
             cardContent.className = 'card-content russian';
             playBtn.innerHTML = '<span>🔊</span><span>Произнести</span>';
-            // Скрываем кнопку для русского текста, если нет аудио
             playBtn.style.display = 'none';
         }
-        
-        cardHint.style.display = 'block';
-        ratingButtons.classList.remove('visible');
         
         // Подготавливаем FSRS scheduling
         const state = this.cardStates[this.currentCard.id];
         const schedulingInfo = this.fsrs.repeat(state, new Date());
         
-        // FSRS v4 возвращает объект с ключами Rating.Again, Rating.Hard и т.д.
-        const { Rating } = window.FSRS;
+        // FSRS v4 возвращает объект с ключами Rating
         this.currentScheduling = {
-            'again': schedulingInfo[Rating.Again],
-            'hard': schedulingInfo[Rating.Hard],
-            'good': schedulingInfo[Rating.Good],
-            'easy': schedulingInfo[Rating.Easy]
+            'again': schedulingInfo[this.Rating.Again],
+            'hard': schedulingInfo[this.Rating.Hard],
+            'good': schedulingInfo[this.Rating.Good],
+            'easy': schedulingInfo[this.Rating.Easy]
         };
         
         this.updateIntervals();
-        
-        // Убираем автовоспроизведение при первом показе
-        // Браузеры блокируют автовоспроизведение без взаимодействия пользователя
-        
         this.updateStats();
     }
     
@@ -267,17 +259,17 @@ class SpanishCardsApp {
     }
     
     showAnswer() {
-        if (this.isFlipped) return;
+        if (this.isFlipped) {
+            console.log('Already flipped, ignoring');
+            return;
+        }
         
         console.log('showAnswer called for card:', this.currentCard.id, this.currentCard.spanish);
         
         this.isFlipped = true;
         
-        // Останавливаем текущее аудио если играет
-        if (this.currentAudio && !this.currentAudio.paused) {
-            this.currentAudio.pause();
-            this.currentAudio = null;
-        }
+        // Останавливаем ВСЕ аудио перед показом ответа
+        this.stopAllAudio();
         
         const cardContent = document.getElementById('cardContent');
         const cardHint = document.getElementById('cardHint');
@@ -288,19 +280,21 @@ class SpanishCardsApp {
             console.log('Showing Russian for:', this.currentCard.spanish, '->', this.currentCard.russian);
             cardContent.textContent = this.currentCard.russian;
             cardContent.className = 'card-content russian';
-            // Скрываем кнопку звука при показе русского перевода
             playBtn.style.display = 'none';
         } else {
             console.log('Showing Spanish for:', this.currentCard.russian, '->', this.currentCard.spanish);
             cardContent.textContent = this.currentCard.spanish;
             cardContent.className = 'card-content spanish';
-            // Показываем кнопку звука при показе испанского текста
             playBtn.style.display = this.currentCard.audio ? 'inline-flex' : 'none';
             
-            // Автовоспроизведение только после взаимодействия пользователя
+            // Автовоспроизведение только после клика пользователя
             if (this.settings.autoplay && this.currentCard.audio) {
-                // Воспроизводим только если пользователь кликнул (есть взаимодействие)
-                setTimeout(() => this.playAudio(), 300);
+                setTimeout(() => {
+                    // Проверяем, что все еще на той же карточке
+                    if (this.isFlipped && this.currentCard.currentType === 'russian-spanish') {
+                        this.playAudio();
+                    }
+                }, 300);
             }
         }
         
@@ -381,7 +375,13 @@ class SpanishCardsApp {
         const today = new Date().toISOString().split('T')[0];
         
         try {
-            const { error } = await this.supabase
+            console.log('Saving stats:', {
+                user_id: this.user.id,
+                date: today,
+                stats: this.todayStats
+            });
+            
+            const { data, error } = await this.supabase
                 .from('user_stats')
                 .upsert({
                     user_id: this.user.id,
@@ -392,32 +392,51 @@ class SpanishCardsApp {
                     review_cards: this.todayStats.reviewCards
                 }, {
                     onConflict: 'user_id,date'
-                });
+                })
+                .select();
             
             if (error) {
-                console.warn('Error saving stats:', error);
-                // Не прерываем работу приложения
+                console.error('Error saving stats:', error);
+            } else {
+                console.log('Stats saved successfully:', data);
             }
         } catch (e) {
-            console.warn('Failed to save stats:', e);
-            // Продолжаем работу даже если сохранение не удалось
+            console.error('Failed to save stats:', e);
         }
     }
     
-    playAudio() {
-        if (!this.currentCard.audio) return;
-        
-        // Проверяем, не играет ли уже аудио
+    stopAllAudio() {
+        // Останавливаем текущее аудио
         if (this.currentAudio && !this.currentAudio.paused) {
             this.currentAudio.pause();
+            this.currentAudio.currentTime = 0;
             this.currentAudio = null;
         }
+        
+        // Останавливаем все кешированные аудио
+        this.audioCache.forEach(audio => {
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        });
+    }
+    
+    playAudio() {
+        if (!this.currentCard || !this.currentCard.audio) return;
+        
+        // Останавливаем все другие аудио
+        this.stopAllAudio();
         
         const playBtn = document.getElementById('playBtn');
         playBtn.classList.add('playing');
         
-        // Используем Supabase Storage URL
+        // Создаем правильный URL для текущей карточки
         const audioUrl = `${this.supabase.storageUrl}/object/public/audio/${this.currentCard.audio}`;
+        
+        console.log('Playing audio for card:', this.currentCard.id, 'file:', this.currentCard.audio);
+        
+        // Создаем новый Audio объект для этой карточки
         this.currentAudio = new Audio(audioUrl);
         
         this.currentAudio.play()

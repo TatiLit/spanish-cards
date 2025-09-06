@@ -1,0 +1,10 @@
+Hasta luego|[Son las 6. Sales de la oficina. Te despides de tu compañero] —Me voy a casa. ______.|До встречи|—¿Ya? —Sí, HASTA LUEGO —Descansa|[sound:hasta_luego.mp3]|[img:hasta_luego.jpg]|A2-B1
+Hasta mañana|[Cierras la tienda. Tu compañera también se va. Os veréis mañana] —Apago las luces. ______.|До завтра|—¿Nos vemos? —HASTA MAÑANA —Descansa bien|[sound:hasta_manana.mp3]|[img:hasta_manana.jpg]|A2-B1
+Hasta pronto|[Tu amigo se va de viaje. No sabes cuándo volverá. Te despides] —Buen viaje y ______.|До скорого|—¿Adiós? —No, HASTA PRONTO —Cuídate mucho|[sound:hasta_pronto.mp3]|[img:hasta_pronto.jpg]|A2-B1
+Nos vemos|[Después del café con amigos. Tienes prisa. Te despides rápido] —Tengo prisa. ______.|Увидимся|—¿Ya? —Sí, NOS VEMOS —Vale, chao|[sound:nos_vemos.mp3]|[img:nos_vemos.jpg]|A2-B1
+Que tengas un buen día|[Cliente sale de tu tienda. Compró mucho. Le deseas buen día] —Gracias por su compra. ______.|Хорошего дня|—Gracias —QUE TENGAS UN BUEN DÍA —Igualmente|[sound:que_tengas_un_buen_dia.mp3]|[img:que_tengas_un_buen_dia.jpg]|A2-B1
+Que descanses|[Son las 11. Tu hermano bosteza. Se va a dormir] —Me voy a la cama. —______.|Отдыхай|—¿Cansado? —Mucho. —QUE DESCANSES —Gracias|[sound:que_descanses.mp3]|[img:que_descanses.jpg]|A2-B1
+Cuídate|[Tu amigo está con gripe. Sale de tu casa. Hace frío] —Toma las medicinas y ______.|Береги себя|—¿Mejor? —No mucho. —CUÍDATE —Lo haré|[sound:cuidate.mp3]|[img:cuidate.jpg]|A2-B1
+Dale recuerdos a...|[Tu amigo va a ver a tu hermana. Le pides que la salude] —Si ves a mi hermana, ______ ella.|Передай привет...|—¿Le digo algo? —DALE RECUERDOS A ella —Se lo diré|[sound:dale_recuerdos_a.mp3]|[img:dale_recuerdos_a.jpg]|A2-B1
+Saluda de mi parte|[Tu ex-compañero va a tu antigua oficina. Conoce a todos] —Si ves a María, ______.|Передай привет от меня|—¿A todos? —SALUDA DE MI PARTE —Con gusto|[sound:saluda_de_mi_parte.mp3]|[img:saluda_de_mi_parte.jpg]|A2-B1
+Fue un placer|[Primera reunión de trabajo. Salió bien. Te despides profesionalmente] —Espero repetir. ______.|Было приятно|—¿Bien? —Sí, FUE UN PLACER —Para mí también|[sound:fue_un_placer.mp3]|[img:fue_un_placer.jpg]|A2-B1

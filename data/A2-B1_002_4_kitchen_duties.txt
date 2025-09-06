@@ -1,0 +1,10 @@
+Lava las verduras|[Lechuga con tierra. Vas a hacer ensalada. Tu madre te recuerda] Antes de cortar, ______.|Помой овощи|—¿Ya? —No, LAVA LAS VERDURAS —Vale|[sound:lava_las_verduras.mp3]|[img:lava_las_verduras.jpg]|A2-B1
+Pela las patatas|[Cinco patatas. Vas a hacer tortilla. Tienen piel] Para la tortilla, ______.|Почисти картошку|—¿Con piel? —No, PELA LAS PATATAS —Ya voy|[sound:pela_las_patatas.mp3]|[img:pela_las_patatas.jpg]|A2-B1
+Corta la cebolla|[Cebolla entera. Necesitas trozos pequeños. Para el sofrito] Para cocinar, ______.|Нарежь лук|—¿Entera? —No, CORTA LA CEBOLLA —OK|[sound:corta_la_cebolla.mp3]|[img:corta_la_cebolla.jpg]|A2-B1
+Pon agua a hervir|[Vas a hacer pasta. Olla vacía. Necesitas agua caliente] Para la pasta, ______.|Поставь воду кипятить|—¿Ya? —PON AGUA A HERVIR —Con sal|[sound:pon_agua_a_hervir.mp3]|[img:pon_agua_a_hervir.jpg]|A2-B1
+Precalienta el horno|[Pizza para hacer. Horno frío. Caja dice 200 grados] Antes de meter la pizza, ______.|Разогрей духовку|—¿Ya? —No, PRECALIENTA EL HORNO —Vale|[sound:precalienta_el_horno.mp3]|[img:precalienta_el_horno.jpg]|A2-B1
+Remueve de vez en cuando|[El arroz se pega. Huele a quemado. Tu madre avisa] Para que no se pegue, ______.|Помешивай время от времени|—¿Siempre? —REMUEVE DE VEZ EN CUANDO —OK|[sound:remueve_de_vez_en_cuando.mp3]|[img:remueve_de_vez_en_cuando.jpg]|A2-B1
+Baja el fuego|[La leche sube. Va a salirse. Rápido] ¡La leche! ¡______!|Убавь огонь|—¿Apago? —No, BAJA EL FUEGO —Ya|[sound:baja_el_fuego.mp3]|[img:baja_el_fuego.jpg]|A2-B1
+Apaga el fuego|[Suena el reloj. Veinte minutos. La comida está lista] Ya está. ______.|Выключи огонь|—¿Más? —No, APAGA EL FUEGO —Hecho|[sound:apaga_el_fuego.mp3]|[img:apaga_el_fuego.jpg]|A2-B1
+Déjalo enfriar|[Pastel muy caliente. Sale vapor. No se puede tocar] Está caliente. ______.|Дай остыть|—¿Corto? —No, DÉJALO ENFRIAR —¿Cuánto?|[sound:dejalo_enfriar.mp3]|[img:dejalo_enfriar.jpg]|A2-B1
+Guárdalo en la nevera|[Sobras en la mesa. Hace calor. Se puede estropear] Para mañana, ______.|Убери в холодильник|—¿Aquí? —No, GUÁRDALO EN LA NEVERA —Tapado|[sound:guardalo_en_la_nevera.mp3]|[img:guardalo_en_la_nevera.jpg]|A2-B1

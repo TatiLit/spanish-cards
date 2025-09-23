@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Конфигурация
-database_url = os.environ.get('DATABASE_URL', 'postgresql://postgres:Zuekz.gjG6738@db.qtdaoicutiuodbkxxffz.supabase.co:5432/postgres')
+database_url = os.environ.get('DATABASE_URL', 'postgresql://postgres:2o7xzdSYggPoZant@db.qtdaoicutiuodbkxxffz.supabase.co:5432/postgres')
 if database_url.startswith('postgres://'):
     database_url = database_url.replace('postgres://', 'postgresql://', 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url

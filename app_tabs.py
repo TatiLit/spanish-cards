@@ -2358,22 +2358,23 @@ def serve_media(filename):
     media_dir = os.path.join(os.path.dirname(__file__), 'media')
     return send_from_directory(media_dir, filename)
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        
-        if not DeckModel.query.first():
-            default_deck = DeckModel(
-                name="Испанский A2-B2",
-                description="Основная колода",
-                load_type='normal'
-            )
-            db.session.add(default_deck)
-            db.session.commit()
-            print("✅ Создана базовая колода")
-        
-        initial_sync()
+# Инициализация БД при импорте модуля (для gunicorn)
+with app.app_context():
+    db.create_all()
     
-    # Изменение здесь:
+    if not DeckModel.query.first():
+        default_deck = DeckModel(
+            name="Испанский A2-B2",
+            description="Основная колода",
+            load_type='normal'
+        )
+        db.session.add(default_deck)
+        db.session.commit()
+        print("✅ Создана базовая колода")
+    
+    initial_sync()
+
+# Это остается для локального запуска
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)

@@ -1673,7 +1673,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             let dialogueHtml = '';
             
             if (card.trigger.includes('[') && card.trigger.includes(']')) {
-                const match = const match = card.trigger.match(/\\[(.+?)\\](.+)/);
+    const match = card.trigger.match(/\\[(.+?)\\](.+)/);
                 if (match) {
                     situationText = match[1];
                     const dialoguePart = match[2].trim();

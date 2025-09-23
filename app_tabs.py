@@ -81,8 +81,8 @@ class CardModel(db.Model):
     last_review = db.Column(db.DateTime)
 
     def to_dict(self):
-        """Конвертация в словарь для JSON"""
-        return {
+    """Конвертация в словарь для JSON"""
+    return {
         'id': self.id,
         'chunk': self.chunk,
         'trigger': self.trigger,
@@ -90,7 +90,7 @@ class CardModel(db.Model):
         'dialogue': self.dialogue,
         'audio_path': self.audio_path,
         'level': self.level,
-        'front_audio': self.front_audio,  # <-- ДОБАВИТЬ ЭТУ СТРОКУ
+        'front_audio': self.front_audio,  
         'state': self.state,
         'reps': self.reps
     }

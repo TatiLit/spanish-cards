@@ -83,16 +83,17 @@ class CardModel(db.Model):
     def to_dict(self):
         """Конвертация в словарь для JSON"""
         return {
-            'id': self.id,
-            'chunk': self.chunk,
-            'trigger': self.trigger,
-            'translation': self.translation,
-            'dialogue': self.dialogue,
-            'audio_path': self.audio_path,
-            'level': self.level,
-            'state': self.state,
-            'reps': self.reps
-        }
+        'id': self.id,
+        'chunk': self.chunk,
+        'trigger': self.trigger,
+        'translation': self.translation,
+        'dialogue': self.dialogue,
+        'audio_path': self.audio_path,
+        'level': self.level,
+        'front_audio': self.front_audio,  # <-- ДОБАВИТЬ ЭТУ СТРОКУ
+        'state': self.state,
+        'reps': self.reps
+    }
 
 # Модель колоды
 class DeckModel(db.Model):
@@ -243,6 +244,7 @@ def sync_cards_from_directory(directory_path='data', deck_id=None):
                             audio_path=card_data['audio_path'],
                             image_path=card_data['image_path'],
                             level=card_data['level'],
+                            front_audio=card_data.get('front_audio', ''),  # <-- ДОБАВИТЬ ЭТУ СТРОКУ
                             state=0,
                             due=datetime.now(timezone.utc)
                         )
@@ -1721,7 +1723,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
                 </button>
             ` : ''}
             <button class="show-answer-btn" onclick="showAnswer()">Показать ответ</button>
-                <button class="show-answer-btn" onclick="showAnswer()">Показать ответ</button>
+                
             `;
         }
         

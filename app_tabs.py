@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Конфигурация
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(__file__), 'anki_spanish.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Zuekz.gjG6738@db.qtdaoicutiuodbkxxffz.supabase.co:5432/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'spanish-anki-secret-key-2025'
 

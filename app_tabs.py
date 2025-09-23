@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request, render_template_string, send_from_dir
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta, timezone
-from fsrs import Scheduler, Card, Rating, ReviewLog
+from fsrs import FSRS, Card, Rating
 import os
 import hashlib
 import glob
@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = 'spanish-anki-secret-key-2025'
 db = SQLAlchemy(app)
 
 # Инициализация FSRS
-fsrs = Scheduler()
+fsrs = FSRS()
 
 # Настройки по времени занятий
 TIME_SETTINGS = {
@@ -1673,7 +1673,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             let dialogueHtml = '';
             
             if (card.trigger.includes('[') && card.trigger.includes(']')) {
-                const match = card.trigger.match(/\[(.+?)\](.+)/);
+                const match = const match = card.trigger.match(/\\[(.+?)\\](.+)/);
                 if (match) {
                     situationText = match[1];
                     const dialoguePart = match[2].trim();
@@ -2377,4 +2377,3 @@ if __name__ == '__main__':
     # Изменение здесь:
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
-    

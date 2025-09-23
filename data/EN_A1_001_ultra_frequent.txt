@@ -1,0 +1,1 @@
+you know|[sound:you_know_example.mp3]|знаешь/понимаешь|You know what I mean?|[sound:you_know.mp3];[img:you_know.jpg]|A1|

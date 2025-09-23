@@ -67,6 +67,7 @@ class CardModel(db.Model):
     audio_path = db.Column(db.String(200))
     image_path = db.Column(db.String(200))
     level = db.Column(db.String(20))
+    front_audio = db.Column(db.String(200), default='')  # ДОБАВИТЬ ЭТУ СТРОКУ
     
     # FSRS параметры
     due = db.Column(db.DateTime, default=datetime.now)
@@ -150,7 +151,7 @@ def parse_card_line(line):
     if len(parts) < 7:
         return None
         
-    return {
+    result = {
         'chunk': parts[0],
         'trigger': parts[1], 
         'translation': parts[2],
@@ -159,6 +160,14 @@ def parse_card_line(line):
         'image_path': parts[5].replace('[img:', '').replace(']', ''),
         'level': parts[6]
     }
+    
+    # Добавляем поле 8 для звука на лицевой стороне
+    if len(parts) > 7:
+        result['front_audio'] = parts[7].replace('[sound:', '').replace(']', '') if parts[7] else ''
+    else:
+        result['front_audio'] = ''
+    
+    return result
 
 def sync_cards_from_directory(directory_path='data', deck_id=None):
     """Синхронизация карточек из директории"""
@@ -1705,7 +1714,13 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
                 <div class="dialogue-container">
                     ${dialogueHtml}
                 </div>
-                
+
+                ${card.front_audio ? `
+                <button class="audio-button" onclick="playAudio('${card.front_audio}')">
+                    🔊
+                </button>
+            ` : ''}
+            <button class="show-answer-btn" onclick="showAnswer()">Показать ответ</button>
                 <button class="show-answer-btn" onclick="showAnswer()">Показать ответ</button>
             `;
         }

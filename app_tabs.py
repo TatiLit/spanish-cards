@@ -17,6 +17,8 @@ database_url = os.environ.get('DATABASE_URL', 'postgresql://postgres:2o7xzdSYggP
 if database_url.startswith('postgres://'):
     database_url = database_url.replace('postgres://', 'postgresql://', 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+print(f"DATABASE_URL from environment: {os.environ.get('DATABASE_URL', 'NOT FOUND')}")
+print(f"Using database: {app.config['SQLALCHEMY_DATABASE_URI'][:50]}...")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'spanish-anki-secret-key-2025'
 

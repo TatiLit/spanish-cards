@@ -2,7 +2,7 @@ Flask==2.3.3
 Flask-CORS==4.0.0
 Flask-SQLAlchemy==3.0.5
 fsrs==3.1.0
-psycopg2==2.9.9
+psycopg2-binary==2.9.9
 gunicorn==21.2.0
-Fix psycopg2 for Python 3.13
+
 

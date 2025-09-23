@@ -1,0 +1,10 @@
+you're right|[sound:youre_right_example.mp3]|ты прав|Yes, you're right|[sound:youre_right.mp3];[img:youre_right.jpg]|A1|
+that's right|[sound:thats_right_example.mp3]|правильно|That's right!|[sound:thats_right.mp3];[img:thats_right.jpg]|A1|
+that's true|[sound:thats_true_example.mp3]|это правда|That's true, but...|[sound:thats_true.mp3];[img:thats_true.jpg]|A2|
+maybe|[sound:maybe_example.mp3]|может быть|Maybe tomorrow|[sound:maybe.mp3];[img:maybe.jpg]|A1|
+by the way|[sound:by_the_way_example.mp3]|кстати|By the way, I forgot|[sound:by_the_way.mp3];[img:by_the_way.jpg]|A2|
+for example||например|For example, this one|[sound:for_example.mp3];[img:for_example.jpg]|A2|
+let's go|[sound:lets_go_example.mp3]|пойдём|Let's go now|[sound:lets_go.mp3];[img:lets_go.jpg]|A1|
+see you|[sound:see_you_example.mp3]|увидимся|See you tomorrow|[sound:see_you.mp3];[img:see_you.jpg]|A1|
+here you are|[sound:here_you_are_example.mp3]|вот, пожалуйста|Here you are, sir|[sound:here_you_are.mp3];[img:here_you_are.jpg]|A1|
+there is/are|[sound:there_is_example.mp3]|есть/имеется|There is a problem|[sound:there_is.mp3];[img:there_is.jpg]|A1|

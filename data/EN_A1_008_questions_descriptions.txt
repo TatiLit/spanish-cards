@@ -1,0 +1,9 @@
+I'd like|[sound:id_like_example.mp3]|я бы хотел|I'd like some coffee|[sound:id_like.mp3];[img:id_like.jpg]|A2|
+going to|[sound:going_to_example.mp3]|собираюсь|I'm going to sleep|[sound:going_to.mp3];[img:going_to.jpg]|A1|
+want to|[sound:want_to_example.mp3]|хотеть|Do you want to come?|[sound:want_to.mp3];[img:want_to.jpg]|A1|
+I like|[sound:i_like_example.mp3]|мне нравится|I like coffee|[sound:i_like.mp3];[img:i_like.jpg]|A1|
+I love|[sound:i_love_example.mp3]|я люблю|I love pizza|[sound:i_love.mp3];[img:i_love.jpg]|A1|
+I hate|[sound:i_hate_example.mp3]|я ненавижу|I hate waiting|[sound:i_hate.mp3];[img:i_hate.jpg]|A2|
+it's good|[sound:its_good_example.mp3]|это хорошо|It's really good|[sound:its_good.mp3];[img:its_good.jpg]|A1|
+it's bad|[sound:its_bad_example.mp3]|это плохо|It's not that bad|[sound:its_bad.mp3];[img:its_bad.jpg]|A1|
+I agree|[sound:i_agree_example.mp3]|я согласен|I agree with you|[sound:i_agree.mp3];[img:i_agree.jpg]|A2|

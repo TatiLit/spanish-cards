@@ -1,0 +1,17 @@
+thank you|[sound:thank_you_example.mp3]|спасибо|Thank you very much|[sound:thank_you.mp3];[img:thank_you.jpg]|A1|
+very much|[sound:very_much_example.mp3]|очень|I like it very much|[sound:very_much.mp3];[img:very_much.jpg]|A1|
+excuse me|[sound:excuse_me_example.mp3]|извините|Excuse me, where is...?|[sound:excuse_me.mp3];[img:excuse_me.jpg]|A1|
+I'm sorry|[sound:im_sorry_example.mp3]|извините/мне жаль|I'm sorry I'm late|[sound:im_sorry.mp3];[img:im_sorry.jpg]|A1|
+how are you|[sound:how_are_you_example.mp3]|как дела|How are you today?|[sound:how_are_you.mp3];[img:how_are_you.jpg]|A1|
+I suppose|[sound:i_suppose_example.mp3]|полагаю|I suppose you're right|[sound:i_suppose.mp3];[img:i_suppose.jpg]|A2|
+at the moment|[sound:at_the_moment_example.mp3]|в данный момент|I'm busy at the moment|[sound:at_the_moment.mp3];[img:at_the_moment.jpg]|A2|
+this morning|[sound:this_morning_example.mp3]|сегодня утром|I saw him this morning|[sound:this_morning.mp3];[img:this_morning.jpg]|A1|
+last year|[sound:last_year_example.mp3]|в прошлом году|We went there last year|[sound:last_year.mp3];[img:last_year.jpg]|A1|
+this year|[sound:this_year_example.mp3]|в этом году|I started this year|[sound:this_year.mp3];[img:this_year.jpg]|A1|
+years ago|[sound:years_ago_example.mp3]|много лет назад|It was years ago|[sound:years_ago.mp3];[img:years_ago.jpg]|A2|
+last night|[sound:last_night_example.mp3]|вчера вечером|I couldn't sleep last night|[sound:last_night.mp3];[img:last_night.jpg]|A1|
+come on|[sound:come_on_example.mp3]|давай/пойдём|Come on, let's go!|[sound:come_on.mp3];[img:come_on.jpg]|A1|
+come in|[sound:come_in_example.mp3]|входите|Please come in|[sound:come_in.mp3];[img:come_in.jpg]|A1|
+come back|[sound:come_back_example.mp3]|возвращаться|When will you come back?|[sound:come_back.mp3];[img:come_back.jpg]|A1|
+have a look|[sound:have_a_look_example.mp3]|посмотреть|Let me have a look|[sound:have_a_look.mp3];[img:have_a_look.jpg]|A1|
+go out|[sound:go_out_example.mp3]|выходить/идти гулять|Let's go out tonight|[sound:go_out.mp3];[img:go_out.jpg]|A1|

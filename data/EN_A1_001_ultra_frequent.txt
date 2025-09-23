@@ -1,1 +1,11 @@
 you know|[sound:you_know_example.mp3]|знаешь/понимаешь|You know what I mean?|[sound:you_know.mp3];[img:you_know.jpg]|A1|
+I think|[sound:i_think_example.mp3]|я думаю|I think it's good|[sound:i_think.mp3];[img:i_think.jpg]|A1|
+I don't|[sound:i_dont_example.mp3]|я не|I don't understand|[sound:i_dont.mp3];[img:i_dont.jpg]|A1|
+I mean|[sound:i_mean_example.mp3]|я имею в виду|I mean, it's difficult|[sound:i_mean.mp3];[img:i_mean.jpg]|A1|
+I don't know|[sound:i_dont_know_example.mp3]|я не знаю|I don't know the answer|[sound:i_dont_know.mp3];[img:i_dont_know.jpg]|A1|
+kind of|[sound:kind_of_example.mp3]|вроде/типа|It's kind of difficult|[sound:kind_of.mp3];[img:kind_of.jpg]|A1|
+sort of|[sound:sort_of_example.mp3]|как бы/вроде|I'm sort of tired|[sound:sort_of.mp3];[img:sort_of.jpg]|A1|
+a bit|[sound:a_bit_example.mp3]|немного|I'm a bit hungry|[sound:a_bit.mp3];[img:a_bit.jpg]|A1|
+used to|[sound:used_to_example.mp3]|раньше/бывало|I used to live there|[sound:used_to.mp3];[img:used_to.jpg]|A2|
+a lot of|[sound:a_lot_of_example.mp3]|много|A lot of people came|[sound:a_lot_of.mp3];[img:a_lot_of.jpg]|A1|
+as well|[sound:as_well_example.mp3]|тоже/также|I'll come as well|[sound:as_well.mp3];[img:as_well.jpg]|A1|

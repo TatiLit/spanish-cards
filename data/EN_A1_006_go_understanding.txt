@@ -1,9 +1,0 @@
-no problem|[sound:no_problem_example.mp3]|без проблем|No problem at all|[sound:no_problem.mp3];[img:no_problem.jpg]|A1|
-it's okay|[sound:its_okay_example.mp3]|всё в порядке|It's okay, don't worry|[sound:its_okay.mp3];[img:its_okay.jpg]|A1|
-too bad|[sound:too_bad_example.mp3]|жаль|That's too bad|[sound:too_bad.mp3];[img:too_bad.jpg]|A2|
-never mind|[sound:never_mind_example.mp3]|неважно|Never mind, forget it|[sound:never_mind.mp3];[img:never_mind.jpg]|A2|
-and then|[sound:and_then_example.mp3]|а потом|And then we went home|[sound:and_then.mp3];[img:and_then.jpg]|A1|
-but|[sound:but_example.mp3]|но|But I can't come|[sound:but.mp3];[img:but.jpg]|A1|
-because|[sound:because_example.mp3]|потому что|Because it's late|[sound:because.mp3];[img:because.jpg]|A1|
-so|[sound:so_example.mp3]|поэтому|So I left early|[sound:so.mp3];[img:so.jpg]|A1|
-or something|[sound:or_something_example.mp3]|или что-то|A book or something|[sound:or_something.mp3];[img:or_something.jpg]|A2|

@@ -80,7 +80,7 @@ class CardModel(db.Model):
     state = db.Column(db.Integer, default=0)  # 0=New, 1=Learning, 2=Review, 3=Relearning
     last_review = db.Column(db.DateTime)
 
-    def to_dict(self):
+def to_dict(self):
     """Конвертация в словарь для JSON"""
     return {
         'id': self.id,

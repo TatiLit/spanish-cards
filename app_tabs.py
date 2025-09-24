@@ -1716,7 +1716,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
                 <div class="dialogue-container">
                     ${dialogueHtml}
                 </div>
-
+            console.log('Front audio:', card.front_audio);
                 ${card.front_audio ? `
                 <button class="audio-button" onclick="playAudio('${card.front_audio}')">
                     🔊
